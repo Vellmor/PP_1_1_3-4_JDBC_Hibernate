@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class UserDaoJDBCImpl implements UserDao {
     private final Connection connection = Util.getJdbcDbConnection();
-    private static final Logger logger = Logger.getLogger(Util.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(UserDaoJDBCImpl.class.getCanonicalName());
 
 
     public UserDaoJDBCImpl() {

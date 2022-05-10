@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class Util {
     private static final Logger logger = Logger.getLogger(Util.class.getCanonicalName());
-    private static final String URL = "jdbc:mysql://localhost:3307/db";
+    private static final String URL = "jdbc:mysql://localhost:3306/db";
     private static final String USER = "user";
     private static final String PASSWORD = "password";
 
@@ -27,8 +27,7 @@ public class Util {
 
     public static Connection getJdbcDbConnection() {
         try {
-//            return DriverManager.getConnection(URL, USER, PASSWORD);
-            return DriverManager.getConnection("jdbc:h2:mem:mydb", "sa", "password");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Не удалось установить соединение с БД: " + e);
             return null;
@@ -50,17 +49,11 @@ public class Util {
                 //стандартные настройки для хибернат
                 //для тех, кто использует другую базу данных нужно заметить поле DRIVER, DIALECT и кусок URL легко гуглятся под любую базу
                 Map<String, String> settings = new HashMap<>();
-                settings.put(Environment.DRIVER, "org.h2.Driver");
-                settings.put(Environment.URL, "jdbc:h2:mem:mydb");
-                settings.put(Environment.USER, "sa");
+                settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/db");
+                settings.put(Environment.USER, "user");
                 settings.put(Environment.PASS, "password");
-                settings.put(Environment.DIALECT, ">org.hibernate.dialect.H2Dialect");
-
-//                settings.put(Environment.DRIVER, "org.postgresql.Driver");
-//                settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/hibernate_tutorial");
-//                settings.put(Environment.USER, "postgres");
-//                settings.put(Environment.PASS, "postgres");
-//                settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
                 registryBuilder.applySettings(settings);
 
