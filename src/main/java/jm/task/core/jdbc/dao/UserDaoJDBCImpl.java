@@ -10,9 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final Connection connection = Util.getJdbcDbConnection();
     private static final Logger logger = Logger.getLogger(UserDaoJDBCImpl.class.getCanonicalName());
-
 
     public UserDaoJDBCImpl() {
 
@@ -20,8 +18,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         String query = "CREATE TABLE IF NOT EXISTS users (id BIGINT PRIMARY KEY AUTO_INCREMENT, first_name TEXT, last_name TEXT, age INT)";
-        try {
-            Statement statement = connection.createStatement();
+        try (final Connection connection = Util.getJdbcDbConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(query);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
@@ -30,8 +28,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         String query = "DROP TABLE IF EXISTS users";
-        try {
-            Statement statement = connection.createStatement();
+        try (final Connection connection = Util.getJdbcDbConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(query);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
@@ -40,10 +38,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) {
         String query = "INSERT INTO users (first_name, last_name, age) VALUES (?, ?, ?)";
-
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement(query);
+        try (final Connection connection = Util.getJdbcDbConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, name);
             ps.setString(2, lastName);
             ps.setByte(3, age);
@@ -55,10 +51,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String query = "DELETE FROM users WHERE id = ?";
-
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement(query);
+        try (final Connection connection = Util.getJdbcDbConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -69,10 +63,9 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         String query = "SELECT * FROM users";
-        try {
-            Statement statement = connection.createStatement();
+        try (final Connection connection = Util.getJdbcDbConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
-
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getLong("id"));
@@ -89,8 +82,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         String query = "TRUNCATE TABLE users";
-        try {
-            Statement statement = connection.createStatement();
+        try (final Connection connection = Util.getJdbcDbConnection();
+             Statement statement = connection.createStatement()) {
             statement.execute(query);
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
