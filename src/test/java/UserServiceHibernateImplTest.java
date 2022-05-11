@@ -1,13 +1,14 @@
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
-import jm.task.core.jdbc.service.UserServiceJdbcImpl;
+import jm.task.core.jdbc.service.UserServiceHibernateImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 
-public class UserServiceTest {
-    private final UserService userService = new UserServiceJdbcImpl();
+public class UserServiceHibernateImplTest {
+
+    private final UserService userService = new UserServiceHibernateImpl();
 
     private final String testName = "Ivan";
     private final String testLastName = "Ivanov";
@@ -98,5 +99,4 @@ public class UserServiceTest {
             Assert.fail("При тестировании очистки таблицы пользователей произошло исключение\n" + e);
         }
     }
-
 }
