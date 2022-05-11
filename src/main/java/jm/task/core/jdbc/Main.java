@@ -23,6 +23,9 @@ public class Main {
 
         userService.removeUserById(1);
         List<User> users = userService.getAllUsers();
+        for (User user: users) {
+            System.out.println(user);
+        }
         userService.cleanUsersTable();
         userService.dropUsersTable();
     }
