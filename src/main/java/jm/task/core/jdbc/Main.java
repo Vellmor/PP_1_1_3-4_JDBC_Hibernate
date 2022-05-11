@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        UserService userService = new UserServiceJdbcImpl();
-//        UserService userService = new UserServiceHibernateImpl();
+//        UserService userService = new UserServiceJdbcImpl();
+        UserService userService = new UserServiceHibernateImpl();
 
         userService.createUsersTable();
 
